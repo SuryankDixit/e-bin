@@ -5,8 +5,8 @@ app.use(express.json());
 
 import {currentUserRouter} from './routes/current-user';
 import {signinRouter} from './routes/signin';
-import { signoutRouter } from './routes/signin';
-import { signupRouter } from './routes/signin';
+import { signoutRouter } from './routes/signout';
+import { signupRouter } from './routes/signup';
 
 app.use(currentUserRouter);
 app.use(signinRouter);
