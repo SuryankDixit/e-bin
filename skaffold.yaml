@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:         # list out all config files that we want to load in our section
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false       # do not push images to docker hub which is default behaviour
+  artifacts:
+    - image: suryankdixit/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
