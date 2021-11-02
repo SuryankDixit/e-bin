@@ -58,6 +58,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+},{
+    toJSON:{
+        transform(doc, ret) { // (actual user document, this is the thing that is going to be turned into JSON(directly making changes into ret))
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.password;        // removes password property from document
+            delete ret.__v;
+
+        } 
+    }
 });
 
 /* 
