@@ -40,6 +40,12 @@ app.use(errorHandler);
 
 
 const start = async()=>{
+
+    // checking if env variable is defined or not at the start of the application
+    if (!process.env.JWT_KEY) {
+        throw new Error('Undefined environment variable');
+    }
+
     /*
         await mongoose.connect('mongodb://localhost');
         Here we are trying to connect to mongo db which is a different pod
