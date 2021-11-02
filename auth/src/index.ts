@@ -1,9 +1,24 @@
 import  express  from "express";
 import 'express-async-errors';
 import  mongoose  from "mongoose";
+import cookieSession from "cookie-session";
 
 const app = express();
 app.use(express.json());
+
+/*
+we are just adding in this little step right here to make sure that Express is aware
+that it's behind a proxy of Ingress and Genex and to make sure that it should still trust traffic as
+being secure, even though it's coming from that proxy.
+*/
+app.set('trust proxy',true);
+
+app.use(
+    cookieSession({
+        signed:false,
+        secure:true         // visit over https connection
+    })
+)
 
 import {currentUserRouter} from './routes/current-user';
 import {signinRouter} from './routes/signin';
