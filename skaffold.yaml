@@ -1,12 +1,34 @@
+
+  
+# apiVersion: skaffold/v2alpha3
+# kind: Config
+# deploy:         # list out all config files that we want to load in our section
+#   kubectl:
+#     manifests:
+#       - ./infra/k8s/*
+# build:
+#   local:
+#     push: false       # do not push images to docker hub which is default behaviour
+#   artifacts:
+#     - image: suryankdixit/auth
+#       context: auth
+#       docker:
+#         dockerfile: Dockerfile
+#       sync:
+#         manual:
+#           - src: "src/**/*.ts"
+#             dest: .
+
+
 apiVersion: skaffold/v2alpha3
 kind: Config
-deploy:         # list out all config files that we want to load in our section
+deploy:
   kubectl:
     manifests:
       - ./infra/k8s/*
 build:
   local:
-    push: false       # do not push images to docker hub which is default behaviour
+    push: false
   artifacts:
     - image: suryankdixit/auth
       context: auth
@@ -14,5 +36,13 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: suryankdixit/ticketing-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
             dest: .
