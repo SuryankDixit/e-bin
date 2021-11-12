@@ -16,8 +16,12 @@ const start = async () => {
         mention port number
         give db name 
     */
+    if (!process.env.MONGO_URI) {
+        throw new Error('MONGO_URI must be defined')
+    }
+
     try {
-        await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+        await mongoose.connect(process.env.MONGO_URI);
         console.log('Connected to Mongo Db');
     } catch (err) {
         console.error(err);
