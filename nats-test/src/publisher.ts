@@ -1,5 +1,6 @@
 import nats from 'node-nats-streaming';
-
+import { TicketCreatedListener } from './events/ticket-created-listener';
+import {TicketCreatedPublisher} from './events/ticket-created-publisher'
 console.clear();
 
 
@@ -15,18 +16,26 @@ const stan = nats.connect('ticketing', 'abc', {
 stan.on('connect', () => {
   console.log('Publisher connected to NATS');
 
-  const data = JSON.stringify({
+  const publisher = new TicketCreatedPublisher(stan);
+  publisher.publish({
     id: '123',
     title: 'concert',
-    price: 20,
+    price: 20
   });
+
+  // const data = JSON.stringify({
+  //   id: '123',
+  //   title: 'concert',
+  //   price: 20,
+  // });
 
 
   /*
     channel name  (subject is the name of the channel we want to publish information to.)
     data,callback function 
   */
-  stan.publish('ticket:created', data, () => {
-    console.log('Event published');
-  });
+  // stan.publish('ticket:created', data, () => {
+  //   console.log('Event published');
+  // });
+
 });
