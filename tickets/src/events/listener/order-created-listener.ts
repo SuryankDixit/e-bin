@@ -1,7 +1,8 @@
 import { Message } from 'node-nats-streaming';
-import { Listener, OrderCreatedEvent, Subjects } from '@cygnetops/common';
+import { Listener, OrderCreatedEvent, Subjects } from '@sdebin/common';
 import { queueGroupName } from './queue-group-name';
 import { Ticket } from '../../models/ticket';
+import { TicketUpdatedPublisher } from '../publishers/ticket-updated-publisher';
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
@@ -21,6 +22,16 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     // Save the ticket
     await ticket.save();
+
+    // publishing event to create consistency in version field across different services
+    await new TicketUpdatedPublisher(this.client).publish({
+      id:ticket.id,
+      price:ticket.price,
+      title:ticket.title,
+      userId:ticket.userId,
+      orderId:ticket.orderId,
+      version:ticket.version
+    });
 
     // ack the message
     msg.ack();
