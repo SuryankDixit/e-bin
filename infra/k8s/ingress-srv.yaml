@@ -32,6 +32,10 @@ spec:
     - host: ticket.com
       http:
         paths:
+          - path: /api/payments/?(.*)
+            backend:
+              serviceName: payments-srv
+              servicePort: 3000
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
