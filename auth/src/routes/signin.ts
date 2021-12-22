@@ -47,10 +47,11 @@ router.post(
         req.session = {
             jwt: userJwt,
         };
-        if(!req.session){
-            res.send('khtm');
-        }
+        // if(!req.session){
+        //     res.send('khtm');
+        // }
         console.log(req.session.jwt);
+        console.log(email,password);
         res.status(200).send(existingUser);
     }
 );
